@@ -1,0 +1,125 @@
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+
+#define MAX 100
+
+int n;
+int Matrix[MAX][MAX];
+
+
+void readdata() {
+    printf("Se le irán solicitando los datos de la matriz por renglón\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("Introduzca el valor [%d][%d]: ", i, j);
+            scanf("%d", &Matrix[i][j]);
+        }
+    }
+}
+
+void printmat() {
+    printf("La matriz introducida fue:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("|%d| ", Matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
+void edd(){
+	printf("\n A continuación se comparara si la matriz es una matriz EDD \n");
+	
+        int esEDD = 1;
+            for (int i = 0; i < n; i++) {
+                int suma = 0;
+                for (int j = 0; j < n; j++) {
+                    if (i != j) suma += abs(Matrix[i][j]);
+                }
+                if (abs(Matrix[i][i]) <= suma) {
+                    esEDD = 0;
+                    break;
+            }
+        }
+		if (esEDD){
+			printf("\nLa matrriz es Estrictamente Dominante Diagonalmente");
+		}
+		else{
+			printf("\nLa matrriz no es Estrictamente Dominante Diagonalmente");
+		}
+	}
+
+
+
+int determinante(){
+	
+	if(n!=2){
+		printf("Esta función solo calcula determinantes de matrices 2x2.\n");
+        return 0;
+	}
+	return Matrix[0][0] * Matrix[1][1] - Matrix[0][1] * Matrix[1][0];
+
+}
+
+
+void corregirElemento() {
+    int fila, columna, nuevoValor;
+    printf("¿Desea corregir algún elemento? (1 = sí, 0 = no): ");
+    int opcion;
+    scanf("%d", &opcion);
+    if (opcion == 1) {
+        printf("Ingrese la fila y columna del elemento a corregir (0-indexado): ");
+        scanf("%d %d", &fila, &columna);
+        if (fila >= 0 && fila < n && columna >= 0 && columna < n) {
+            printf("Ingrese el nuevo valor: ");
+            scanf("%d", &nuevoValor);
+            Matrix[fila][columna] = nuevoValor;
+            printf("Elemento corregido.\n");
+            printmat();
+        } else {
+            printf("Índices fuera de rango.\n");
+        }
+    }
+}
+
+
+int main(){
+	
+	/*
+	Objetivos. Solicitar Matrix, si un elemento es incorrecto corregir solo ese elemento (no volver a capturar toda la matriz)
+	Calcular determinante. Si es 0 se "muere" el programa
+	Verificar si la matriz es edd, si no hacerlo por triangulacion
+	Solicitar la dimension de la matriz
+	*/
+	
+	short int menu;
+	    printf("Bienvenido al programa 2. Sistemas de Ecuaciones\n");
+	    printf("Este programa leerá un sistema de ecuaciones y lo resolverá usando métodos numéricos\n");
+	
+	    printf("Introduzca el valor de la dimensión de la matriz (n x n): ");
+	    scanf("%d", &n);
+	
+	    if (n > MAX) {
+	        printf("Dimensión demasiado grande. Máximo permitido: %d\n", MAX);
+	        return 1;
+	    }
+	
+	    printf("A continuación empezaremos leyendo el arreglo\n");
+	    readdata();
+	    printmat();
+	    corregirElemento(); // opcional
+	
+	    int determ = determinante(); // o la función general
+	    if (determ != 0) {
+	        printf("El determinante es: %d\n", determ);
+	        edd(); // verifica si es EDD
+	        // Si no es EDD, aplicar triangulación
+	    }
+	    else {
+	        printf("Este sistema de ecuaciones no tiene solución. El determinante es 0.\n");
+	    }
+
+return 0;
+}
