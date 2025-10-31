@@ -1,0 +1,56 @@
+int main() {
+    int opcion;
+    int determ;
+
+    printf("Bienvenido al programa 2. Sistemas de Ecuaciones\n");
+    printf("Este programa leerá un sistema de ecuaciones y lo resolverá usando métodos numéricos\n");
+
+    printf("Introduzca el valor de la dimensión de la matriz (n x n): ");
+    scanf("%d", &n);
+
+    if (n > MAX) {
+        printf("Dimensión demasiado grande. Máximo permitido: %d\n", MAX);
+        return 1;
+    }
+
+    readdata();
+do {
+        printf("\n--- MENÚ DE OPCIONES ---\n");
+        printf("1. Mostrar matriz\n");
+        printf("2. Corregir un elemento\n");
+        printf("3. Calcular determinante (solo 2x2)\n");
+        printf("4. Verificar si es EDD\n");
+        printf("5. Salir\n");
+        printf("Seleccione una opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                printmat();
+                break;
+            case 2:
+                corregirElemento();
+                break;
+            case 3:
+                determ = determinante();
+                if (n == 2) {
+                    printf("El determinante es: %d\n", determ);
+                    if (determ == 0) {
+                        printf("Este sistema de ecuaciones no tiene solución. El determinante es 0.\n");
+                    }
+                }
+                break;
+            case 4:
+                edd();
+                break;
+            case 5:
+                printf("Saliendo del programa...\n");
+                break;
+            default:
+                printf("Opción no válida. Intente de nuevo.\n");
+        }
+
+    } while (opcion != 5);
+
+    return 0;
+}
