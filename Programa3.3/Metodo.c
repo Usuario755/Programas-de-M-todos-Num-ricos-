@@ -9,53 +9,7 @@ void mostrarMenu() {
     printf("0. Salir\n");
 }
 
-void sustAtras(int n, double L[MAX][MAX], double y[MAX], double x[MAX]) {
-    for (int i = n - 1; i >= 0; i--) {
-        double suma = 0.0;
-        for (int j = i + 1; j < n; j++) {
-            suma += L[j][i] * x[j];
-        }
-        x[i] = (y[i] - suma) / L[i][i];
-    }
-}
 
-void leerVector(int n, double b[MAX]) {
-    printf("Ingrese el vector b:\n");
-    for (int i = 0; i < n; i++) {
-        printf("[%d]:",i);
-        scanf("%lf", &b[i]);
-    }
-}
-
-void leerMatriz(int n, double Matrix[MAX][MAX], double b[MAX]) {
-    printf("Ingrese la matriz (%dx%d):\n", n, n);
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            printf("[%d][%d]:",i,j);
-            scanf("%lf", &Matrix[i][j]);
-        }
-        printf(" \n");
-    }
-    printf("Ingrese el vector b: ");
-    for (int i = 0; i < n; i++) {
-        scanf("%lf", &b[i]);
-    }
-}
-
-void imprimirMatriz(int n, double Matrix[MAX][MAX]) {
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            printf("%8.3f ", Matrix[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-void imprimirVector(int n, double v[MAX]) {
-    for (int i = 0; i < n; i++) {
-        printf("%8.6f\n", v[i]);
-    }
-}
 
 void gaussSeidel(int n, double Matrix[MAX][MAX], double b[MAX], double X[MAX], double tolerancia, int max_iter) {
     for (int i = 0; i < n; i++) X[i] = 0.0;
@@ -132,6 +86,65 @@ void fn2(double x0, double x1, int kmax, double tol) {
 }
 
 
+void sustAtras(int n, double L[MAX][MAX], double y[MAX], double x[MAX]) {
+    for (int i = n - 1; i >= 0; i--) {
+        double suma = 0.0;
+        for (int j = i + 1; j < n; j++) {
+            suma += L[j][i] * x[j];
+        }
+        x[i] = (y[i] - suma) / L[i][i];
+    }
+}
+
+void leerVector(int n, double b[MAX]) {
+    printf("Ingrese el vector b:\n");
+    for (int i = 0; i < n; i++) {
+        printf("[%d]:",i);
+        scanf("%lf", &b[i]);
+    }
+}
+
+void leerMatriz(int n, double Matrix[MAX][MAX], double b[MAX]) {
+    printf("Ingrese la matriz (%dx%d):\n", n, n);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("[%d][%d]:",i,j);
+            scanf("%lf", &Matrix[i][j]);
+        }
+        printf(" \n");
+    }
+    printf("Ingrese el vector b: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%lf", &b[i]);
+    }
+}
+
+void imprimirMatriz(int n, double Matrix[MAX][MAX]) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%8.3f ", Matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void imprimirVector(int n, double v[MAX]) {
+    for (int i = 0; i < n; i++) {
+        printf("%8.6f\n", v[i]);
+    }
+}
+
+
+void sustregres(int n, double L[n][n], double y[n], double x[n]) {
+	for (int i = n - 1; i >= 0; i--) {
+	double sum = 0.0;
+	for (int j = i + 1; j < n; j++){
+		sum += L[j][i] * x[j];
+		x[i] = (y[i] - sum) / L[i][i];
+		}
+	}
+}
+
 int cholesky(int n, double A[MAX][MAX], double L[MAX][MAX]) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j <= i; j++) {
@@ -153,8 +166,6 @@ int cholesky(int n, double A[MAX][MAX], double L[MAX][MAX]) {
     }
     return 1;
 }
-
-
 void sustDelante(int n, double L[n][n], double b[n], double Z[n]) {
 	for (int i = 0; i < n; i++) {
 	double sum = 0.0;
@@ -162,16 +173,6 @@ void sustDelante(int n, double L[n][n], double b[n], double Z[n]) {
 		sum += L[i][j] * Z[j];
 		Z[i] = (b[i] - sum) / L[i][i];
 		}	
-	}
-}
-
-void sustregres(int n, double L[n][n], double y[n], double x[n]) {
-	for (int i = n - 1; i >= 0; i--) {
-	double sum = 0.0;
-	for (int j = i + 1; j < n; j++){
-		sum += L[j][i] * x[j];
-		x[i] = (y[i] - sum) / L[i][i];
-		}
 	}
 }
 
@@ -185,9 +186,7 @@ void programa3() {
 	if (!cholesky(n, A, L)) return;
 	sustDelante(n, L, b, y);
 	sustAtras(n, L, y, x);
-
-
-printf("\n Soluciones finales del sistema: \n");
+	printf("\n Soluciones finales del sistema: \n");
 	for (int i = 0; i < n; i++){
 	printf("x[%d] = %.6lf", i, x[i]);
 	}
